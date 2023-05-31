@@ -2,6 +2,7 @@ package tom.iamtom.thequizmachine.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -52,12 +53,32 @@ public class QuestionController {
         EntityModel<Question> entityModel = assembler.toModel(newQuestion);
 
         return ResponseEntity
-                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
     }
-    
+
     @PutMapping("/questions/{id}")
     public ResponseEntity<?> replaceQuestion(@RequestBody Question newQuestion, @PathVariable Long id) {
-        //TODO: this method
+        Optional<Question> questionOptional = questionRepository.findById(id);
+        Question question = new Question();
+
+        if (questionOptional.isPresent()) {
+            question.setId(id);
+            question.setCategory(newQuestion.getCategory());
+            question.setCorrectAnswer(newQuestion.getCorrectAnswer());
+            question.setText(newQuestion.getText());
+            question.setWrongAnswers(newQuestion.getWrongAnswers());
+        } else {
+            question = newQuestion;
+            question.setId(id);
+        }
+
+        questionRepository.save(question);
+
+        EntityModel<Question> entityModel = assembler.toModel(question);
+
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 }
