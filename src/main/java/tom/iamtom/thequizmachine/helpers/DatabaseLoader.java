@@ -51,22 +51,22 @@ public class DatabaseLoader {
             wrongAnswers4.add("AD 47");
             Question question4 = new Question("What year was the first Roman invasion of Britain?", "AD 43", wrongAnswers4, Category.HISTORY);
             questionRepository.save(question4);
-            
+
             System.out.println("Loaded questions into database:");
             questionRepository.findAll().forEach(question -> log.info("Loaded: " + question));
-            
+
             Set<Question> quiz1questions = new HashSet<Question>();
             quiz1questions.add(question1);
             quiz1questions.add(question2);
             Quiz quiz1 = new Quiz(quiz1questions);
             quizRepository.save(quiz1);
-            
+
             Set<Question> quiz2questions = new HashSet<Question>();
             quiz2questions.add(question3);
             quiz2questions.add(question4);
             Quiz quiz2 = new Quiz(quiz2questions);
             quizRepository.save(quiz2);
-            
+
             System.out.println("Loaded quizes into database:");
             quizRepository.findAll().forEach(quiz -> log.info("Loaded: " + quiz));
         };
