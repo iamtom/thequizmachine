@@ -83,6 +83,8 @@ public class QuestionController {
                 .body(entityModel);
     }
     
+    //TODO: PATCH?
+    
     @DeleteMapping("/questions/{id}")
     public ResponseEntity<?> deleteQuestion(@PathVariable Long id) {
         questionRepository.deleteById(id);

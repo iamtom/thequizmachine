@@ -5,14 +5,20 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tom.iamtom.thequizmachine.exceptions.QuizNotFoundException;
+import tom.iamtom.thequizmachine.models.NewQuizDTO;
 import tom.iamtom.thequizmachine.models.Quiz;
 import tom.iamtom.thequizmachine.repositories.QuizRepository;
+import tom.iamtom.thequizmachine.services.QuizService;
 
 @RestController
 public class QuizController {
@@ -21,6 +27,8 @@ public class QuizController {
     private QuizRepository quizRepository;
     @Autowired
     private QuizModelAssembler assembler;
+    @Autowired
+    private QuizService quizService;
     
     @GetMapping("/quizzes")
     public CollectionModel<EntityModel<Quiz>> allQuizzes() {
@@ -38,6 +46,14 @@ public class QuizController {
         return assembler.toModel(quiz);
     }
     
-    //TODO: Post mapping should receive an object containing a set of question ids that is then used to construct a proper quiz object
-    
+    @PostMapping("/quizzes")
+    public ResponseEntity<?> newQuiz(@RequestBody NewQuizDTO dto) {
+        Quiz newQuiz = quizService.mapNewQuizDTOtoQuiz(dto);
+        quizRepository.save(newQuiz);
+        EntityModel<Quiz> entityModel = assembler.toModel(newQuiz);
+
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
+    }
 }
