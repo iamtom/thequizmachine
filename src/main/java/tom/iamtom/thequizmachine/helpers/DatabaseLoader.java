@@ -58,13 +58,13 @@ public class DatabaseLoader {
             Set<Question> quiz1questions = new HashSet<Question>();
             quiz1questions.add(question1);
             quiz1questions.add(question2);
-            Quiz quiz1 = new Quiz(quiz1questions);
+            Quiz quiz1 = new Quiz("QUIZ 1", quiz1questions);
             quizRepository.save(quiz1);
 
             Set<Question> quiz2questions = new HashSet<Question>();
             quiz2questions.add(question3);
             quiz2questions.add(question4);
-            Quiz quiz2 = new Quiz(quiz2questions);
+            Quiz quiz2 = new Quiz("QUIZ 2", quiz2questions);
             quizRepository.save(quiz2);
 
             System.out.println("Loaded quizes into database:");

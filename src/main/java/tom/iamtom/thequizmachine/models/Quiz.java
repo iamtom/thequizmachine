@@ -14,6 +14,7 @@ public class Quiz {
     @Id
     @GeneratedValue
     private Long id;
+    private String name;
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "question_id")
     private Set<Question> questions;
@@ -21,7 +22,8 @@ public class Quiz {
     public Quiz() {
     }
 
-    public Quiz(Set<Question> questions) {
+    public Quiz(String name, Set<Question> questions) {
+        this.name = name;
         this.questions = questions;
     }
 
@@ -31,6 +33,14 @@ public class Quiz {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Set<Question> getQuestions() {
@@ -43,6 +53,7 @@ public class Quiz {
 
     @Override
     public String toString() {
-        return "Quiz{" + "id=" + id + ", questions=" + questions + '}';
+        return "Quiz{" + "id=" + id + ", name=" + name + ", questions=" + questions + '}';
     }
+
 }
