@@ -13,26 +13,24 @@ import tom.iamtom.thequizmachine.repositories.QuestionRepository;
 
 @Service
 public class QuizService {
-    
+
     @Autowired
     private QuestionRepository questionRepository;
-    
+
     public Quiz mapNewQuizDTOtoQuiz(NewQuizDTO dto) {
-        
-        System.out.println(dto.toString());
-        
+
         Iterator<Long> idIterator = dto.getQuestionIds().iterator();
         Set<Question> questions = new HashSet<Question>();
-        
-        while(idIterator.hasNext()) {
+
+        while (idIterator.hasNext()) {
             Long id = idIterator.next();
             Question question = questionRepository.findById(id).orElseThrow(() -> new QuestionNotFoundException(id));
             questions.add(question);
         }
-        
-        Quiz quiz = new Quiz (dto.getName(), questions);
-        
+
+        Quiz quiz = new Quiz(dto.getName(), questions);
+
         return quiz;
     }
-    
+
 }

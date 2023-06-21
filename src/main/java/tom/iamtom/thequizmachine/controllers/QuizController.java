@@ -1,6 +1,8 @@
 package tom.iamtom.thequizmachine.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -12,9 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tom.iamtom.thequizmachine.exceptions.QuizNotFoundException;
+import tom.iamtom.thequizmachine.helpers.AnswerChecker;
 import tom.iamtom.thequizmachine.models.NewQuizDTO;
 import tom.iamtom.thequizmachine.models.Quiz;
 import tom.iamtom.thequizmachine.repositories.QuizRepository;
@@ -29,6 +33,8 @@ public class QuizController {
     private QuizModelAssembler assembler;
     @Autowired
     private QuizService quizService;
+    @Autowired
+    private AnswerChecker checker;
     
     @GetMapping("/quizzes")
     public CollectionModel<EntityModel<Quiz>> allQuizzes() {
@@ -56,4 +62,19 @@ public class QuizController {
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
     }
+
+    @PostMapping("/quizzes/check")
+    public HashMap<Long, Boolean> assessQuiz(@RequestBody HashMap<Long, String> answers) {
+        //answers hashmap should be: key - question id, value - user answer
+        HashMap<Long, Boolean> results = new HashMap<Long, Boolean>();
+
+        for (Map.Entry<Long, String> entry : answers.entrySet()) {
+            
+            Boolean result = checker.checkAnswer(entry.getKey(), entry.getValue());
+            results.put(entry.getKey(), result);
+        }
+        
+        return results;
+    }
+        
 }
