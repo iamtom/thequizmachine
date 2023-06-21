@@ -62,17 +62,11 @@ public class QuizController {
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
     }
-
+    
     @PostMapping("/quizzes/check")
     public HashMap<Long, Boolean> assessQuiz(@RequestBody HashMap<Long, String> answers) {
         //answers hashmap should be: key - question id, value - user answer
-        HashMap<Long, Boolean> results = new HashMap<Long, Boolean>();
-
-        for (Map.Entry<Long, String> entry : answers.entrySet()) {
-            
-            Boolean result = checker.checkAnswer(entry.getKey(), entry.getValue());
-            results.put(entry.getKey(), result);
-        }
+        HashMap<Long, Boolean> results = checker.checkAnswers(answers);
         
         return results;
     }
