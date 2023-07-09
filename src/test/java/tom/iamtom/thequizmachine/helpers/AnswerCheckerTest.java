@@ -66,9 +66,6 @@ public class AnswerCheckerTest {
         assertNull(optional);
     }
 
-    /**
-     * Test of checkAnswers method, of class AnswerChecker.
-     */
     @Test
     public void testCheckAnswers() {
         System.out.println("checkAnswers");
@@ -81,9 +78,6 @@ public class AnswerCheckerTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of checkAnswer method, of class AnswerChecker.
-     */
     @Test
     public void testCheckAnswer_withCorrectAnswer() {
         System.out.println("Testing checkAnswer with correct answer");
@@ -91,6 +85,17 @@ public class AnswerCheckerTest {
         String userAnswer = "Correct Answer";
 
         Boolean expResult = true;
+        Boolean result = checker.checkAnswer(1L, userAnswer);
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testCheckAnswer_withIncorrectAnswer() {
+        System.out.println("Testing checkAnswer with incorrect answer");
+
+        String userAnswer = "Wrong Answer";
+
+        Boolean expResult = false;
         Boolean result = checker.checkAnswer(1L, userAnswer);
         assertEquals(expResult, result);
     }
