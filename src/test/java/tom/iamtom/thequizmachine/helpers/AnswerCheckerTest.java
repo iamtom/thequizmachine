@@ -24,30 +24,46 @@ import tom.iamtom.thequizmachine.repositories.QuestionRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class AnswerCheckerTest {
-    
+
     @InjectMocks
     private AnswerChecker checker;
-    
+
     @Mock
     private QuestionRepository questionRepository;
-    
+
+    private Question question;
+    private Optional<Question> optional;
+
     public AnswerCheckerTest() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
     }
-    
+
     @BeforeEach
     public void setUp() {
+        //fake Question
+        List<String> wrongAnswers = new ArrayList<>();
+        wrongAnswers.add("Wrong1");
+        wrongAnswers.add("Wrong2");
+        wrongAnswers.add("Wrong3");
+        question = new Question("What is the answer?", "Correct Answer", wrongAnswers, Category.GEOGRAPHY);
+        optional = Optional.of(question);
+
+        Mockito.when(questionRepository.findById(anyLong())).thenReturn(optional);
     }
-    
+
     @AfterEach
     public void tearDown() {
+        question = null;
+        optional = null;
+        assertNull(question);
+        assertNull(optional);
     }
 
     /**
@@ -70,23 +86,13 @@ public class AnswerCheckerTest {
      */
     @Test
     public void testCheckAnswer_withCorrectAnswer() {
-        System.out.println("Test checkAnswer");
-        
-        //fake Question
-        List<String> wrongAnswers = new ArrayList<>();
-            wrongAnswers.add("Wrong1");
-            wrongAnswers.add("Wrong2");
-            wrongAnswers.add("Wrong3");
-        Question question = new Question("What is the answer?", "Correct Answer", wrongAnswers, Category.GEOGRAPHY);      
-        Optional<Question> optional = Optional.of(question);
+        System.out.println("Testing checkAnswer with correct answer");
 
-        Mockito.when(questionRepository.findById(anyLong())).thenReturn(optional);
-        
         String userAnswer = "Correct Answer";
-        
+
         Boolean expResult = true;
         Boolean result = checker.checkAnswer(1L, userAnswer);
         assertEquals(expResult, result);
     }
-    
+
 }
