@@ -68,14 +68,21 @@ public class AnswerCheckerTest {
 
     @Test
     public void testCheckAnswers() {
-        System.out.println("checkAnswers");
-        HashMap<Long, String> answers = null;
-        AnswerChecker instance = new AnswerChecker();
-        HashMap<Long, Boolean> expResult = null;
-        HashMap<Long, Boolean> result = instance.checkAnswers(answers);
+        System.out.println("Testing checkAnswers");
+        HashMap<Long, String> answers = new HashMap<Long, String>();
+        answers.put(1L, "Correct Answer");
+        answers.put(2L, "Wrong1");
+        answers.put(3L, "Wrong2");
+        answers.put(4L, "Wrong3");
+        
+        HashMap<Long, Boolean> expResult = new HashMap<Long, Boolean>();
+        expResult.put(1L, true);
+        expResult.put(2L, false);
+        expResult.put(3L, false);
+        expResult.put(4L, false);
+        
+        HashMap<Long, Boolean> result = checker.checkAnswers(answers);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     @Test
