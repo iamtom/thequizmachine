@@ -24,8 +24,6 @@ import tom.iamtom.thequizmachine.repositories.QuestionRepository;
 
 @RestController
 public class QuestionController {
-    //when sending a question object to the frontend, first combine the correct answer and wrong answers into one list
-    //private final QuestionRepository questionRepository;
 
     @Autowired
     private QuestionRepository questionRepository;
