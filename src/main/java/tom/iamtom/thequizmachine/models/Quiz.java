@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.Set;
 
 @Entity
@@ -18,6 +19,9 @@ public class Quiz {
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "question_id")
     private Set<Question> questions;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "score_id")
+    private ArrayList<Score> scores;
 
     public Quiz() {
     }

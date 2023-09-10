@@ -7,7 +7,6 @@ import java.util.List;
 
 @Entity
 public class Question {
-    //when sending a question object to the frontend, first combine the correct answer and wrong answers into one list
 
     @Id
     @GeneratedValue
