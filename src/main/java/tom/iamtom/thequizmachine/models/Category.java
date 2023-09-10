@@ -6,4 +6,7 @@ public enum Category {
     SCIENCE,
     MUSIC,
     HISTORY,
+    FILM,
+    ENTERTAINMENT,
+    MISC,
 }
