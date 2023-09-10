@@ -15,6 +15,7 @@ public class Quiz {
     @GeneratedValue
     private Long id;
     private String name;
+    private String quizCode;
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "question_id")
     private Set<Question> questions;
